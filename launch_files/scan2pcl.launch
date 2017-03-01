@@ -1,0 +1,6 @@
+<launch>
+    <node name="scan2pcl" pkg="scan2pcl" type="scan2pcl">
+        <remap from="/scan" to="/scan"/>
+        <remap from="/cloud_out" to="/cloud_out"/>
+    </node>
+</launch>
