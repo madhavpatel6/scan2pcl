@@ -3,4 +3,8 @@
         <remap from="/scan" to="/scan"/>
         <remap from="/cloud_out" to="/cloud_out"/>
     </node>
+    <node name="pcl2global" pkg="scan2pcl" type="pcl2global">
+	<remap from="/cloud_out" to="/cloud_out"/>
+	<remap from="/cloud_out_global" to="/cloud_out_global"/>
+    </node>
 </launch>

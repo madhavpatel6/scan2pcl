@@ -6,6 +6,7 @@ find_package(catkin REQUIRED COMPONENTS
   roscpp
   std_msgs
   tf
+  pcl_ros
 )
 
 
@@ -22,3 +23,5 @@ include_directories(include ${catkin_INCLUDE_DIRS})
 add_executable(scan2pcl src/scan2pcl.cpp)
 target_link_libraries(scan2pcl ${catkin_LIBRARIES})
 
+add_executable(pcl2global src/pcl2global.cpp)
+target_link_libraries(pcl2global ${catkin_LIBRARIES})
