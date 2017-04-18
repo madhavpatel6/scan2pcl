@@ -41,8 +41,8 @@ ros::Publisher tf_pub;
 void callback(const sensor_msgs::PointCloud2::ConstPtr& pcl_in)
 {
     sensor_msgs::PointCloud2 pcl_out;
-    tf_listener->waitForTransform("/odom", (*pcl_in).header.frame_id, (*pcl_in).header.stamp, ros::Duration(5.0));
-    pcl_ros::transformPointCloud("/odom", *pcl_in, pcl_out, *tf_listener);
+    tf_listener->waitForTransform("/odomc", (*pcl_in).header.frame_id, (*pcl_in).header.stamp, ros::Duration(5.0));
+    pcl_ros::transformPointCloud("/odomc", *pcl_in, pcl_out, *tf_listener);
     tf_pub.publish(pcl_out);
 }
 

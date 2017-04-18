@@ -1,10 +1,9 @@
 <launch>
     <node name="scan2pcl" pkg="scan2pcl" type="scan2pcl">
         <remap from="/scan" to="/scan"/>
-        <remap from="/cloud_out" to="/cloud_out"/>
     </node>
     <node name="pcl2global" pkg="scan2pcl" type="pcl2global">
-	<remap from="/cloud_out" to="/cloud_out"/>
-	<remap from="/cloud_out_global" to="/cloud_out_global"/>
     </node>
+    <!--node pkg="tf" type="static_transform_publisher" name="base_to_laser"
+        args="0.16 0 0.15 0 0 0 /base_link /laser 100" /-->
 </launch>
