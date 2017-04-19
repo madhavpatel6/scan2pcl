@@ -1,6 +1,6 @@
 <launch>
     <node name="scan2pcl" pkg="scan2pcl" type="scan2pcl">
-        <remap from="/scan" to="/scan"/>
+        <remap from="/scan" to="/p3dx/laser/scan"/>
     </node>
     <node name="pcl2global" pkg="scan2pcl" type="pcl2global">
     </node>

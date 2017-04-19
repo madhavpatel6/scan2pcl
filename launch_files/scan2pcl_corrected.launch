@@ -1,0 +1,7 @@
+<launch>
+    <node name="scan2pcl" pkg="scan2pcl" type="scan2pcl">
+        <remap from="/scan" to="/p3dx/laser/scan"/>
+    </node>
+    <node name="pcl2odomc" pkg="scan2pcl" type="pcl2odomc.py">
+    </node>
+</launch>

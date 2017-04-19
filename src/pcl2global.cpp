@@ -8,41 +8,14 @@
 #include "pcl/point_types.h"
 
 
-/*class PointCloudTransformer{
-
-public:
-  ros::NodeHandle n_;
-  tf::TransformListener listener_;
-  ros::Publisher publisher;
-
-  PointCloudTransformer(ros::NodeHandle n) :
-    n_(n)
-  {
-    ROS_INFO("Transformer Init");
-    n_.subscribe<sensor_msgs::PointCloud2>("cloud_out", 10, boost::bind(&PointCloudTransformer::callback, this, _1));
-    publisher = n_.advertise<sensor_msgs::PointCloud2>("/cloud_out_global",10);
-  }
-
-  void callback (const sensor_msgs::PointCloud2::ConstPtr& pcl_in)
-  {
-    ROS_INFO("In callback");
-    sensor_msgs::PointCloud2 pcl_out;
-
-    listener_.waitForTransform("/odom", (*pcl_in).header.frame_id, (*pcl_in).header.stamp, ros::Duration(5.0));
-    pcl_ros::transformPointCloud("/odom", *pcl_in, pcl_out, listener_);
-
-    publisher.publish(pcl_out);
-
-  }
-};*/
 tf::TransformListener* tf_listener;
 ros::Publisher tf_pub;
 
 void callback(const sensor_msgs::PointCloud2::ConstPtr& pcl_in)
 {
     sensor_msgs::PointCloud2 pcl_out;
-    tf_listener->waitForTransform("/odomc", (*pcl_in).header.frame_id, (*pcl_in).header.stamp, ros::Duration(5.0));
-    pcl_ros::transformPointCloud("/odomc", *pcl_in, pcl_out, *tf_listener);
+    tf_listener->waitForTransform("/odom", (*pcl_in).header.frame_id, (*pcl_in).header.stamp, ros::Duration(5.0));
+    pcl_ros::transformPointCloud("/odom", *pcl_in, pcl_out, *tf_listener);
     tf_pub.publish(pcl_out);
 }
 
