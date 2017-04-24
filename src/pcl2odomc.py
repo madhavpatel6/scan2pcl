@@ -7,7 +7,7 @@ import message_filters
 import sensor_msgs.point_cloud2 as PCL
 from sensor_msgs.msg import PointCloud2, PointField
 from nav_msgs.msg import Odometry
-
+import time
 
 def pointcloud2_to_list(cloud):
     gen = PCL.read_points(cloud, skip_nans=True, field_names=('x', 'y', 'z'))
@@ -24,11 +24,16 @@ def list_to_pointcloud2(points):
 
 new_scan = None
 new_odomc = None
+is_running = False
+pub = None
+
 def callback(odomc, scan):
-    global new_scan
-    global new_odomc
-    new_scan = scan
-    new_odomc = odomc
+    #rospy.loginfo('Delta stamp: %ds %dns' % (odomc.header.stamp.secs - scan.header.stamp.secs, odomc.header.stamp.nsecs - scan.header.stamp.nsecs))
+    t = [odomc.pose.pose.position.x, odomc.pose.pose.position.y, odomc.pose.pose.position.z]
+    q = [odomc.pose.pose.orientation.w, odomc.pose.pose.orientation.x,
+         odomc.pose.pose.orientation.y, odomc.pose.pose.orientation.z]
+    transformed_scan = transform_scan(pointcloud2_to_list(scan), t, q)
+    pub.publish(list_to_pointcloud2(transformed_scan))
 
 def compute_rotation_matrix(q):
     return numpy.matrix([
@@ -52,13 +57,17 @@ def main():
     rospy.init_node('Pcl2odomc')
     odom_sub = message_filters.Subscriber('/odomc', Odometry)
     scan_sub = message_filters.Subscriber('/cloud_out', PointCloud2)
+    global pub
     pub = rospy.Publisher('/icp/scan', PointCloud2, queue_size=10)
-    ts = message_filters.ApproximateTimeSynchronizer([odom_sub, scan_sub], 10, 1)
+    ts = message_filters.ApproximateTimeSynchronizer([odom_sub, scan_sub], 50, .5)
     ts.registerCallback(callback)
     global new_scan
     global new_odomc
+    global is_running
     while not rospy.is_shutdown():
-        if new_scan is not None and new_odomc is not None:
+        '''if new_scan is not None and new_odomc is not None:
+            print('Running:  ' + str(is_running))
+            is_running = True
             scan = new_scan
             odomc = new_odomc
             t = [odomc.pose.pose.position.x, odomc.pose.pose.position.y, odomc.pose.pose.position.z]
@@ -68,6 +77,8 @@ def main():
             pub.publish(list_to_pointcloud2(transformed_scan))
             new_scan = None
             new_odomc = None
-
+            is_running = False
+            print('Completed: ' + str(is_running))'''
+        pass
 if __name__ == "__main__":
     main()
