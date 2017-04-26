@@ -59,7 +59,7 @@ def main():
     scan_sub = message_filters.Subscriber('/cloud_out', PointCloud2)
     global pub
     pub = rospy.Publisher('/icp/scan', PointCloud2, queue_size=10)
-    ts = message_filters.ApproximateTimeSynchronizer([odom_sub, scan_sub], 50, .5)
+    ts = message_filters.ApproximateTimeSynchronizer([odom_sub, scan_sub], 50, 0.5)
     ts.registerCallback(callback)
     global new_scan
     global new_odomc
