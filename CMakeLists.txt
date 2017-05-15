@@ -30,3 +30,6 @@ target_link_libraries(pcl2global ${catkin_LIBRARIES})
 
 add_executable(pcl2odomc src/pcl2odomc.cpp)
 target_link_libraries(pcl2odomc ${catkin_LIBRARIES})
+
+add_executable(map2odomtf src/map2odomtf.cpp)
+target_link_libraries(map2odomtf ${catkin_LIBRARIES})
